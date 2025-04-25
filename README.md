@@ -1,8 +1,8 @@
 
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>Vaishali Balamurugan</H3>
+<H3>212222230164</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>DATE:21/04/25</H3>
 <H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
 <H3>Aim:</H3>
 To implement a Multilayer Perceptron for Multi classification
@@ -116,11 +116,157 @@ Normalize our dataset.
 
 <H3>Program:</H3> 
 
-Insert your code here
+```py
+import sklearn
+import pandas as pd
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+```
+
+```py
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+```
+
+```py
+names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'Class']
+```
+```py
+irisdata = pd.read_csv(url, names=names)
+```
+```py
+# Takes first 4 columns and assign them to variable "X"
+X = irisdata.iloc[:, 0:4]
+```
+
+```py
+# Takes first 5th columns and assign them to variable "Y". Object dtype refers to strings.
+y = irisdata.select_dtypes(include=[object])
+X.head()
+y.head()
+```
+
+```py
+# y actually contains all categories or classes:
+y.Class.unique()
+```
+
+```py
+# Now transforming categorial into numerical values
+le = preprocessing.LabelEncoder()
+y = y.apply(le.fit_transform)
+y.head()
+```
+```py
+# Now for train and test split (80% of  dataset into  training set and  other 20% into test data)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+```
+
+```py
+# Feature scaling
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+mlp = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=1000)
+mlp.fit(X_train, y_train.values.ravel())
+predictions = mlp.predict(X_test)
+print(predictions)
+```
+
+```py
+# Last thing: evaluation of algorithm performance in classifying flowers
+print(confusion_matrix(y_test,predictions))
+print(classification_report(y_test,predictions))
+```
+```py
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+```
+
+```py
+arr = ['SepalLength', 'SepalWidth', 'PetalLength', 'PetalWidth', 'Species']
+```
+```py
+df = pd.read_csv(url, names=arr)
+print(df.head())
+```
+
+```py
+a = df.iloc[:, 0:4]
+b = df.select_dtypes(include=[object])
+b = df.iloc[:,4:5]
+```
+
+```py
+training_a, testing_a, training_b, testing_b = train_test_split(a, b, test_size = 0.25)
+```
+```py
+myscaler = StandardScaler()
+myscaler.fit(training_a)
+```
+```py
+training_a = myscaler.transform(training_a)
+training_a = myscaler.transform(training_a)
+```
+```py
+m1 = MLPClassifier(hidden_layer_sizes=(12, 13, 14), activation='relu', solver='adam', max_iter=2500)
+m1.fit(training_a, training_b.values.ravel())
+```
+```py
+predicted_values = m1.predict(testing_a)
+```
+```py
+print(confusion_matrix(testing_b,predicted_values))
+print(classification_report(testing_b,predicted_values))
+```
 
 <H3>Output:</H3>
+```
+[1 2 0 1 0 2 0 2 1 0 2 1 2 2 2 1 0 2 2 0 1 2 0 2 2 0 1 1 0 2]
+```
 
-Show your results here
+```
+[[ 9  0  0]
+ [ 0  8  1]
+ [ 0  0 12]]
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00         9
+           1       1.00      0.89      0.94         9
+           2       0.92      1.00      0.96        12
+
+    accuracy                           0.97        30
+   macro avg       0.97      0.96      0.97        30
+weighted avg       0.97      0.97      0.97        30
+```
+
+```
+   SepalLength  SepalWidth  PetalLength  PetalWidth      Species
+0          5.1         3.5          1.4         0.2  Iris-setosa
+1          4.9         3.0          1.4         0.2  Iris-setosa
+2          4.7         3.2          1.3         0.2  Iris-setosa
+3          4.6         3.1          1.5         0.2  Iris-setosa
+4          5.0         3.6          1.4         0.2  Iris-setosa
+```
+
+```
+[[ 0  0 13]
+ [ 0  0  9]
+ [ 0  0 16]]
+                 precision    recall  f1-score   support
+
+    Iris-setosa       0.00      0.00      0.00        13
+Iris-versicolor       0.00      0.00      0.00         9
+ Iris-virginica       0.42      1.00      0.59        16
+
+       accuracy                           0.42        38
+      macro avg       0.14      0.33      0.20        38
+   weighted avg       0.18      0.42      0.25        38
+```
+
 
 <H3>Result:</H3>
+
 Thus, MLP is implemented for multi-classification using python.
